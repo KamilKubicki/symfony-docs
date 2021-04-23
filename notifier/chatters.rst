@@ -218,6 +218,92 @@ to add `message options`_::
 
     $chatter->send($chatMessage);
 
+Adding text to a Microsoft Teams Message
+-----------------------------------------
+
+With a Microsoft Teams, you can use the simple ChatMessage::
+
+    use Symfony\Component\Notifier\Bridge\MicrosoftTeams\MicrosoftTeamsTransport;
+    use Symfony\Component\Notifier\Message\ChatMessage;
+
+    $chatMessage = (new ChatMessage('Contribute To Symfony'))->transport('microsoftteams');
+    $chatter->send($chatMessage);
+
+The result will be something like:
+
+.. image:: /_images/notifier/microsoft_teams/message.png
+   :align: center
+
+Adding Interactions to a Microsoft Teams Message
+-----------------------------------------
+
+With a Microsoft Teams Message, you can use the
+:class:`Symfony\\Component\\Notifier\\Bridge\\MicrosoftTeams\\MicrosoftTeamsOptions` class
+to add `MessageCard options`_::
+
+    use Symfony\Component\Notifier\Bridge\MicrosoftTeams\Action\ActionCard;
+    use Symfony\Component\Notifier\Bridge\MicrosoftTeams\Action\HttpPostAction;
+    use Symfony\Component\Notifier\Bridge\MicrosoftTeams\Action\Input\DateInput;
+    use Symfony\Component\Notifier\Bridge\MicrosoftTeams\Action\Input\TextInput;
+    use Symfony\Component\Notifier\Bridge\MicrosoftTeams\MicrosoftTeamsOptions;
+    use Symfony\Component\Notifier\Bridge\MicrosoftTeams\MicrosoftTeamsTransport;
+    use Symfony\Component\Notifier\Bridge\MicrosoftTeams\Section\Field\Fact;
+    use Symfony\Component\Notifier\Bridge\MicrosoftTeams\Section\Section;
+    use Symfony\Component\Notifier\Message\ChatMessage;
+
+    $chatMessage = new ChatMessage('');
+
+    // Action elements
+    $input = new TextInput();
+    $input->id('input_title');
+    $input->isMultiline(true)->maxLength(5)->title('Input Title');
+
+    $inputDate = new DateInput();
+    $inputDate->title('Input Date Title')->id('input_date');
+
+    // Create Microsoft Teams MessageCard
+    $microsoftTeamsOptions = (new MicrosoftTeamsOptions())
+        ->text('Text')
+        ->title('Title')
+        ->summary('Summary')
+        ->themeColor('#F4D35E')
+        ->section(
+            (new Section())
+            ->title('Section - name')
+            ->fact((new Fact())
+                ->name('Section Fact 1')
+                ->value('Section Fact 1 value')
+            )
+            ->fact((new Fact())
+                ->name('Section Fact 2')
+                ->value('Section Fact 2 value')
+            )
+        )
+        ->action((new ActionCard())
+            ->name('ActionCard - name')
+            ->input($input)
+            ->input($inputDate)
+            ->action((new HttpPostAction())
+                ->name('Add comment')
+                ->target('http://target')
+            )
+        )
+    ;
+
+    // Add the custom options to the chat message and send the message
+    $chatMessage->options($microsoftTeamsOptions);
+    $chatter->send($chatMessage);
+
+The result will be something like:
+
+.. image:: /_images/notifier/microsoft_teams/message-card.png
+   :align: center
+
+.. versionadded:: 5.3
+
+    Options for Microsoft Teams were introduced in Symfony 5.3.
+
 .. _`Block elements`: https://api.slack.com/reference/block-kit/block-elements
 .. _`Embed elements`: https://discord.com/developers/docs/resources/webhook
 .. _`message options`: https://core.telegram.org/bots/api
+.. _`MessageCard options`: https://docs.microsoft.com/en-us/outlook/actionable-messages/message-card-reference
