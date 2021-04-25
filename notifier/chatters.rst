@@ -219,7 +219,7 @@ to add `message options`_::
     $chatter->send($chatMessage);
 
 Adding text to a Microsoft Teams Message
------------------------------------------
+----------------------------------------
 
 With a Microsoft Teams, you can use the simple ChatMessage::
 
@@ -235,7 +235,7 @@ The result will be something like:
    :align: center
 
 Adding Interactions to a Microsoft Teams Message
------------------------------------------
+------------------------------------------------
 
 With a Microsoft Teams Message, you can use the
 :class:`Symfony\\Component\\Notifier\\Bridge\\MicrosoftTeams\\MicrosoftTeamsOptions` class
@@ -256,31 +256,38 @@ to add `MessageCard options`_::
     // Action elements
     $input = new TextInput();
     $input->id('input_title');
-    $input->isMultiline(true)->maxLength(5)->title('Input Title');
+    $input->isMultiline(true)->maxLength(5)->title('In few words, why would you like to participate?');
 
     $inputDate = new DateInput();
-    $inputDate->title('Input Date Title')->id('input_date');
+    $inputDate->title('Proposed date')->id('input_date');
 
     // Create Microsoft Teams MessageCard
     $microsoftTeamsOptions = (new MicrosoftTeamsOptions())
-        ->text('Text')
-        ->title('Title')
+        ->title('Symfony Online Meeting')
+        ->text('Symfony Online Meeting are the events where the best developers meet to share experiences...')
         ->summary('Summary')
         ->themeColor('#F4D35E')
-        ->section(
-            (new Section())
-            ->title('Section - name')
+        ->section((new Section())
+            ->title('Talk about Symfony 5.x - would you like to join? Please give a shout!')
             ->fact((new Fact())
-                ->name('Section Fact 1')
-                ->value('Section Fact 1 value')
+                ->name('Presenter')
+                ->value('John Doe')
             )
             ->fact((new Fact())
-                ->name('Section Fact 2')
-                ->value('Section Fact 2 value')
+                ->name('Speaker')
+                ->value('Patricia Smith')
+            )
+            ->fact((new Fact())
+                ->name('Duration')
+                ->value('90 min')
+            )
+            ->fact((new Fact())
+                ->name('Date')
+                ->value('TBA')
             )
         )
         ->action((new ActionCard())
-            ->name('ActionCard - name')
+            ->name('ActionCard')
             ->input($input)
             ->input($inputDate)
             ->action((new HttpPostAction())
