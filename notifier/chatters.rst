@@ -256,7 +256,7 @@ to add `MessageCard options`_::
     // Action elements
     $input = new TextInput();
     $input->id('input_title');
-    $input->isMultiline(true)->maxLength(5)->title('In few words, why would you like to participate?');
+    $input->isMultiline(true)->maxLength(5)->title('In a few words, why would you like to participate?');
 
     $inputDate = new DateInput();
     $inputDate->title('Proposed date')->id('input_date');
@@ -268,10 +268,10 @@ to add `MessageCard options`_::
         ->summary('Summary')
         ->themeColor('#F4D35E')
         ->section((new Section())
-            ->title('Talk about Symfony 5.x - would you like to join? Please give a shout!')
+            ->title('Talk about Symfony 5.3 - would you like to join? Please give a shout!')
             ->fact((new Fact())
                 ->name('Presenter')
-                ->value('John Doe')
+                ->value('Fabien Potencier')
             )
             ->fact((new Fact())
                 ->name('Speaker')
